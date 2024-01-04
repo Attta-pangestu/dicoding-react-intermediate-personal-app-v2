@@ -5,7 +5,7 @@ import {Route, Routes} from 'react-router-dom';
 import Navigation from './components/Navigation';
 
 // pages
-import HomePage from './pages/HomePage';
+import HomePageWrapper from './pages/HomePage';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       </header>
       <main>
         <Routes>
-          <Route path='/'  element={<HomePage />}/>
+          <Route path='/'  element={<HomePageWrapper />}/>
         </Routes>
       </main>
     </div>
