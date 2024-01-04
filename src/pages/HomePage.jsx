@@ -13,12 +13,13 @@ import NoteList from "../components/NoteList";
 
 function HomePageWrapper() {
     const [urlSearchParams, setUrlSearchParams] = useSearchParams();
+    const searchKeyword = urlSearchParams.get('note')
     function onSearchHandler(keyword){
         setUrlSearchParams({
             note : keyword,
         })
     }
-    return <HomePage onSearch={onSearchHandler}/> 
+    return <HomePage searchNoteKeyword={searchKeyword} onSearch={onSearchHandler}/> 
 }
 
 class HomePage extends React.Component {
@@ -26,6 +27,7 @@ class HomePage extends React.Component {
         super(props) ; 
         this.state = {
             noteListArray : getAllNotes(),
+            searchKeyword : props.searchNoteKeyword || '',
         }
     }
 
@@ -33,7 +35,7 @@ class HomePage extends React.Component {
         return(
             <section>
                 <h2>Catatan Aktif</h2>
-                <SearchBar onSearch={this.props.onSearch}/>
+                <SearchBar onSearch={this.props.onSearch} searchKeyword={this.state.searchKeyword}/>
                 <NoteList noteListArray={this.state.noteListArray}/> 
             </section>
         );
