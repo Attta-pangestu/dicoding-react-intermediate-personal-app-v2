@@ -6,6 +6,8 @@ import Navigation from './components/Navigation';
 
 // pages
 import HomePageWrapper from './pages/HomePage';
+import DetailPageWrapper from './pages/DetailPage';
+import AddPagesWrapper from './pages/AddNewPages';
 
 function App() {
   return (
@@ -16,6 +18,9 @@ function App() {
       <main>
         <Routes>
           <Route path='/'  element={<HomePageWrapper />}/>
+          <Route path='/notes/:id'  element={<DetailPageWrapper />}/>
+          <Route path='/notes/new'  element={<AddPagesWrapper />}/>
+          
         </Routes>
       </main>
     </div>

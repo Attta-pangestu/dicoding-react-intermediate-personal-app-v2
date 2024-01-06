@@ -169,8 +169,9 @@ main {
   padding: 8px 0;
 }
 
-.add-new-page__input__title::placeholder {
+.add-new-page__input__title::placeholder, .add-new-page__input__body::placeholder {
   color: var(--on-background-grey);
+  padding: 0px;
 }
 
 .add-new-page__input .add-new-page__input__body {
@@ -184,8 +185,8 @@ main {
   min-height: 500px;
 }
 
-[data-placeholder]:empty::before {
-  content: attr(data-placeholder);
+[data-placeholder-body]:empty:after {
+  content: attr(data-placeholder-body);
   color: var(--on-background-grey)
 }
 
