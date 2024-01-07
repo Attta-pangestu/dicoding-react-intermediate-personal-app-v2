@@ -33,7 +33,7 @@ class AddPages extends React.Component {
         }
         this.onInputTitleChangeHandler = this.onInputTitleChangeHandler.bind(this);
         this.onInputBodyChangeHandler = this.onInputBodyChangeHandler.bind(this);
-        // this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
+        this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
     }
     
     onInputTitleChangeHandler(event) {
@@ -50,6 +50,10 @@ class AddPages extends React.Component {
         })
     }
 
+    onAddNotesHandler() {
+        this.props.onClickAdd(this.state);
+    }
+
     render() {
         return (
             <div className="add-new-page">    
@@ -61,7 +65,7 @@ class AddPages extends React.Component {
                     />
                 </div>
                 <div className="add-new-page__action">
-                    <ButtonActions icon={<FiCheckCircle/>} onClick={() => this.props.onClickAdd(this.state)} tooltipe={"simpan catatan"} />
+                    <ButtonActions icon={<FiCheckCircle/>} onClick={this.onAddNotesHandler} tooltipe={"simpan catatan"} />
                 </div>
 
             </div>
