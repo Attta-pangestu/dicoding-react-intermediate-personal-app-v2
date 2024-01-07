@@ -1,9 +1,9 @@
 import Swal from "sweetalert2";
 
-function sweetAlert() {
+function sweetAlert(message) {
   Swal.fire({
     title: "Catatan Disimpan!",
-    text: "Berhsil Menyimpan Catatan",
+    text: message,
     icon: "success",
   });
 }

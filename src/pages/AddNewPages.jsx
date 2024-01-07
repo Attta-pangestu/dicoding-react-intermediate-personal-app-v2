@@ -16,7 +16,7 @@ function AddPagesWrapper() {
     
     function onClickAddHandler(stateNote) {
         addNote({...stateNote});
-        sweetAlert();
+        sweetAlert("Berhsil Menyimpan Catatan");
         navigate('/');
     }
 

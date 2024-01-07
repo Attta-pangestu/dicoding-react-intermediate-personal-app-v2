@@ -3,7 +3,7 @@ import SearchBar from "../components/SearchBar";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 // import data
-import { getAllNotes, getActiveNotes } from "../utils/local-data";
+import { getActiveNotes } from "../utils/local-data";
 import { showFormattedDate } from "../utils/convertDateFormat";
 
 // import style
@@ -44,7 +44,7 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props) ; 
         this.state = {
-            noteListArray : getAllNotes(),
+            noteListArray : getActiveNotes(),
             searchKeyword : props.searchNoteKeyword || '',
         }
         this.onChangeKeywordValue = this.onChangeKeywordValue.bind(this);
@@ -71,11 +71,10 @@ class HomePage extends React.Component {
 
         
         return(
-            const filterActiveNotes = getActiveNotes()
             <section>
                 <h2>Catatan Aktif</h2>
                 <SearchBar onSearch={this.onChangeKeywordValue} searchKeyword={this.state.searchKeyword}/>
-                <NoteList noteListArray={filteredNotesList}/> 
+                <NoteList noteListArray={this.state.noteListArray}/> 
                 <div className="homepage__action">
                     <ButtonActions tooltipe={"Tambah catatan"} onClick={this.props.onAdd} icon={<FiPlusCircle />}/>
                 </div>
