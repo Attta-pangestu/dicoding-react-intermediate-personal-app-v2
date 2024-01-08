@@ -84,16 +84,16 @@ function addNote({ title, body }) {
   notes = newNotes;
 }
 
-function deleteNote(id) {
-  getAllNotes().filter((note) => note.id !== id);
+export function deleteNote(id) {
+  notes = notes.filter((note) => note.id !== id);
 }
 
-function archiveNote(id) {
-  archiveNote = getAllNotes().map((note) => {
+export function archiveNote(id) {
+  notes = notes.map((note) => {
     if (note.id === id) {
       return { ...note, archived: true };
     }
-    return archiveNote;
+    return note; 
   });
 }
 
@@ -124,7 +124,6 @@ export {
   getAllNotes,
   getActiveNotes,
   getArchivedNotes,
-  deleteNote,
   editNote,
   getNote,
   unarchiveNote,

@@ -1,9 +1,9 @@
 import React from "react";
 import {FiCheckCircle} from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // utlis
-import { addNote } from "../utils/local-data";
+import { addNote, getNote} from "../utils/local-data";
 
 // component
 import NoteInput from "../components/NoteInput";
@@ -11,25 +11,29 @@ import ButtonActions from "../components/ButtonActions";
 import sweetAlert from "../components/SweetAlert";
 
 
-function AddPagesWrapper() {
+function EditPagesWrapper() {
+    const {noteId}  = useParams();
     const navigate = useNavigate();
-    
+    const noteData = getNote(noteId);
+    const initialBody = noteData.body;
+
     function onClickAddHandler(stateNote) {
         addNote({...stateNote});
         sweetAlert("Berhsil Menyimpan Catatan");
         navigate('/');
     }
 
-    return <AddPages onClickAdd={onClickAddHandler}/>
+    return <EditPages initialBody={initialBody} noteItem={noteData} onClickAdd={onClickAddHandler}/>
 }
 
 
-class AddPages extends React.Component {
+class EditPages extends React.Component {
     constructor(props) {  
         super(props);
         this.state = {
-            title: '',
-            body : '', 
+            title: props.noteItem.title,
+            body: props.noteItem.body, 
+            initialBody: props.initialBody,
         }
         this.onInputTitleChangeHandler = this.onInputTitleChangeHandler.bind(this);
         this.onInputBodyChangeHandler = this.onInputBodyChangeHandler.bind(this);
@@ -62,6 +66,7 @@ class AddPages extends React.Component {
                         state={this.state}
                         onTitleInputHandler={this.onInputTitleChangeHandler}
                         onBodyInputHandler={this.onInputBodyChangeHandler}
+                        initialBody={this.state.initialBody}
                     />
                 </div>
                 <div className="add-new-page__action">
@@ -73,4 +78,4 @@ class AddPages extends React.Component {
     }
 }
 
-export default AddPagesWrapper;
+export default EditPagesWrapper;

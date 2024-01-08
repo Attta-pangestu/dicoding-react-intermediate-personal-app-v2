@@ -48,6 +48,7 @@ class HomePage extends React.Component {
             searchKeyword : props.searchNoteKeyword || '',
         }
         this.onChangeKeywordValue = this.onChangeKeywordValue.bind(this);
+        this.onClickAddButton = this.onClickAddButton.bind(this);
     }
 
     onChangeKeywordValue(keyword) {
@@ -56,6 +57,10 @@ class HomePage extends React.Component {
         this.setState({
             searchKeyword : keyword,
         })
+    }
+
+    onClickAddButton() {
+        this.props.onAdd();
     }
 
 
@@ -69,14 +74,13 @@ class HomePage extends React.Component {
         }
         );
 
-        
         return(
             <section>
                 <h2>Catatan Aktif</h2>
                 <SearchBar onSearch={this.onChangeKeywordValue} searchKeyword={this.state.searchKeyword}/>
                 <NoteList noteListArray={this.state.noteListArray}/> 
                 <div className="homepage__action">
-                    <ButtonActions tooltipe={"Tambah catatan"} onClick={this.props.onAdd} icon={<FiPlusCircle />}/>
+                    <ButtonActions tooltipe={"Tambah catatan"} onClick={this.onClickAddButton} icon={<FiPlusCircle />}/>
                 </div>
             </section>
         );
@@ -84,3 +88,5 @@ class HomePage extends React.Component {
 }
 
 export default HomePageWrapper;
+
+

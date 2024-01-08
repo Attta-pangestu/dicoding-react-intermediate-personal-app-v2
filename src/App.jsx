@@ -8,6 +8,8 @@ import Navigation from './components/Navigation';
 import HomePageWrapper from './pages/HomePage';
 import DetailPageWrapper from './pages/DetailPage';
 import AddPagesWrapper from './pages/AddNewPages';
+import ArchivePagesWrapper from './pages/ArchivePages';
+import EditPagesWrapper from './pages/EditPage';
 
 function App() {
   return (
@@ -19,8 +21,9 @@ function App() {
         <Routes>
           <Route path='/'  element={<HomePageWrapper />}/>
           <Route path='/notes/:id'  element={<DetailPageWrapper />}/>
+          <Route path='/notes/edit/:noteId'  element={<EditPagesWrapper />}/>
           <Route path='/notes/new'  element={<AddPagesWrapper />}/>
-          
+          <Route path='/arsip' element={<ArchivePagesWrapper />}/>
         </Routes>
       </main>
     </div>
