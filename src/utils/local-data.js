@@ -88,7 +88,7 @@ function deleteNote(id) {
   getAllNotes().filter((note) => note.id !== id);
 }
 
-export function archiveNote(id) {
+function archiveNote(id) {
   archiveNote = getAllNotes().map((note) => {
     if (note.id === id) {
       return { ...note, archived: true };
