@@ -9,7 +9,6 @@ function Navigation() {
             <nav className="navigation">
                 <ul>
                     <li><Link to="/arsip">Arsip</Link></li>
-                    <li><Link to="/deleted">Trash</Link></li>
                 </ul>
             </nav>
         </React.Fragment>

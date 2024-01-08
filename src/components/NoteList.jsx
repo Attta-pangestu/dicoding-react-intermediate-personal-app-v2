@@ -12,7 +12,9 @@ function NoteList({noteListArray}){
         );
     }
     return (
-        
+        <div className="notes-list-empty">
+            <p>Tidak ada catatan</p>
+        </div>
     );
 
 }
