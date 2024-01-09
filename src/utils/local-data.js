@@ -108,16 +108,18 @@ function unarchiveNote(id) {
 }
 
 function editNote({ id, title, body }) {
-  const noteToEdit = notes.find((note) => note.id === id);
-  noteToEdit.title = title;
-  noteToEdit.body = body;
-
+  const noteToEdit = notes.find(note => note.id === id);
+  noteToEdit.title = title ; 
+  noteToEdit.body = body ; 
+  
   notes = notes.map((note) => {
     if (note.id === id) {
       return note;
     }
     return note;
   });
+  
+  
 }
 
 export {

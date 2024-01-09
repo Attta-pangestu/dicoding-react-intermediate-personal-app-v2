@@ -139,6 +139,14 @@ main {
   right: 32px;
 }
 
+.toogle-wrap{
+  position: fixed;
+  display: flex;
+  gap: 16px;
+  bottom: 32px;
+  left: 32px;
+}
+
 .action {
   display: flex;
   align-items: center;

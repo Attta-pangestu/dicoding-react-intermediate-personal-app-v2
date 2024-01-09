@@ -3,7 +3,7 @@ import {FiCheckCircle} from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 
 // utlis
-import { addNote, getNote} from "../utils/local-data";
+import { editNote, getNote} from "../utils/local-data";
 
 // component
 import NoteInput from "../components/NoteInput";
@@ -17,13 +17,13 @@ function EditPagesWrapper() {
     const noteData = getNote(noteId);
     const initialBody = noteData.body;
 
-    function onClickAddHandler(stateNote) {
-        addNote({...stateNote});
+    function onClickEditHandler(stateNote) {
+        editNote({...stateNote});
         sweetAlert("Berhsil Menyimpan Catatan");
         navigate('/');
     }
 
-    return <EditPages initialBody={initialBody} noteItem={noteData} onClickAdd={onClickAddHandler}/>
+    return <EditPages initialBody={initialBody} noteItem={noteData} onClickEdit={onClickEditHandler}/>
 }
 
 
@@ -31,13 +31,13 @@ class EditPages extends React.Component {
     constructor(props) {  
         super(props);
         this.state = {
+            id : props.noteItem.id,
             title: props.noteItem.title,
             body: props.noteItem.body, 
-            initialBody: props.initialBody,
         }
         this.onInputTitleChangeHandler = this.onInputTitleChangeHandler.bind(this);
         this.onInputBodyChangeHandler = this.onInputBodyChangeHandler.bind(this);
-        this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
+        this.onEditNotesHandler = this.onEditNotesHandler.bind(this);
     }
     
     onInputTitleChangeHandler(event) {
@@ -54,8 +54,8 @@ class EditPages extends React.Component {
         })
     }
 
-    onAddNotesHandler() {
-        this.props.onClickAdd(this.state);
+    onEditNotesHandler() {
+        this.props.onClickEdit(this.state);
     }
 
     render() {
@@ -66,11 +66,11 @@ class EditPages extends React.Component {
                         state={this.state}
                         onTitleInputHandler={this.onInputTitleChangeHandler}
                         onBodyInputHandler={this.onInputBodyChangeHandler}
-                        initialBody={this.state.initialBody}
+                        initialBody={this.props.initialBody}
                     />
                 </div>
                 <div className="add-new-page__action">
-                    <ButtonActions icon={<FiCheckCircle/>} onClick={this.onAddNotesHandler} tooltipe={"simpan catatan"} />
+                    <ButtonActions icon={<FiCheckCircle/>} onClick={this.onEditNotesHandler} tooltipe={"simpan catatan"} />
                 </div>
 
             </div>
