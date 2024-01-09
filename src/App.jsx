@@ -4,7 +4,7 @@ import {Route, Routes} from 'react-router-dom';
 // Components 
 import Navigation from './components/Navigation';
 import ButtonActions from './components/ButtonActions';
-import {FiSun} from 'react-icons/fi'
+import {FiSun, FiMoon} from 'react-icons/fi'
 
 // pages
 import HomePageWrapper from './pages/HomePage';
@@ -12,10 +12,11 @@ import DetailPageWrapper from './pages/DetailPage';
 import AddPagesWrapper from './pages/AddNewPages';
 import ArchivePagesWrapper from './pages/ArchivePages';
 import EditPagesWrapper from './pages/EditPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 
 class App extends React.Component {
-  constructor() {
+  constructor() { 
     super() 
     this.state = {
       theme : "" 
@@ -40,11 +41,12 @@ class App extends React.Component {
             <Route path='/notes/edit/:noteId'  element={<EditPagesWrapper />}/>
             <Route path='/notes/new'  element={<AddPagesWrapper />}/>
             <Route path='/arsip' element={<ArchivePagesWrapper />}/>
+            <Route path='*' element={<NotFoundPage />}/>
           </Routes>
           
         </main>
           <div className='toogle-wrap toogle-theme'>
-              <ButtonActions icon={<FiSun />} tooltipe={"ganti tema"} onClick={this.onClickToogleTheme}/>
+              <ButtonActions icon={this.state.theme === 'light'? <FiSun /> : <FiMoon /> } tooltipe={"ganti tema"} onClick={this.onClickToogleTheme}/>
           </div>
       </div>
     );
