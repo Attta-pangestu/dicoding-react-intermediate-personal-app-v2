@@ -1,5 +1,6 @@
 import React from "react";
 import parser from 'html-react-parser';
+import PropTypes from 'prop-types';
 
 function NoteInput({state, onTitleInputHandler, onBodyInputHandler, initialBody }) {
     
@@ -28,6 +29,14 @@ function NoteInput({state, onTitleInputHandler, onBodyInputHandler, initialBody 
         
 
     );
+}
+
+
+NoteInput.propTypes = {
+    state: PropTypes.object.isRequired,
+    onTitleInputHandler: PropTypes.func.isRequired,
+    onBodyInputHandler: PropTypes.func.isRequired,
+    initialBody: PropTypes.string
 }
 
 export default NoteInput;

@@ -4,10 +4,6 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 
 // import data
 import { getActiveNotes } from "../utils/local-data";
-import { showFormattedDate } from "../utils/convertDateFormat";
-
-// import style
-import style from '../styles/homepage.module.css';
 
 // import component
 import NoteList from "../components/NoteList";
@@ -68,8 +64,6 @@ class HomePage extends React.Component {
         const filteredNotesList = this.state.noteListArray.filter(note => {
             return (
             note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()) 
-            ||
-            note.body.toLowerCase().includes(this.state.searchKeyword.toLowerCase())
             );
         }
         );
@@ -78,7 +72,7 @@ class HomePage extends React.Component {
             <section>
                 <h2>Catatan Aktif</h2>
                 <SearchBar onSearch={this.onChangeKeywordValue} searchKeyword={this.state.searchKeyword}/>
-                <NoteList noteListArray={this.state.noteListArray}/> 
+                <NoteList noteListArray={filteredNotesList}/> 
                 <div className="homepage__action">
                     <ButtonActions tooltipe={"Tambah catatan"} onClick={this.onClickAddButton} icon={<FiPlusCircle />}/>
                 </div>
