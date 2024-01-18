@@ -1,10 +1,12 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, useNavigate} from 'react-router-dom';
+
+// utils
+import { getUserLoggedIn} from './utils/networkData';
+import ThemeContext from './context/themeContext';
 
 // Components 
 import Navigation from './components/Navigation';
-import ButtonActions from './components/ButtonActions';
-import {FiSun, FiMoon} from 'react-icons/fi'
 
 // pages
 import HomePageWrapper from './pages/HomePage';
@@ -13,45 +15,77 @@ import AddPagesWrapper from './pages/AddNewPages';
 import ArchivePagesWrapper from './pages/ArchivePages';
 import EditPagesWrapper from './pages/EditPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
+function App () {
+  const [theme, setTheme] = React.useState('');
+  const [authedUsers, setAuthedUsers] = React.useState(false);
+  const navigate = useNavigate();
+  const toggleTheme = () => { theme === 'light' ? setTheme('') : setTheme('light') }; 
 
-class App extends React.Component {
-  constructor() { 
-    super() 
-    this.state = {
-      theme : "" 
-    }
-    this.onClickToogleTheme = this.onClickToogleTheme.bind(this);
+  const ThemeContext = {
+    theme,
+    toggleTheme, 
+  };
+  
+  
+
+  const successLoginHandler = (error) => {
+    setAuthedUsers(!error);
   }
 
-  onClickToogleTheme () {
-    this.state.theme === 'light' ? this.setState({theme: ''}) : this.setState({theme:'light'}) ; 
+  
+  
+
+  React.useEffect(() => {
+      getUserLoggedIn().then( ({error, id, name, email}) => {
+        if(error) {
+          alert("Silahkan Login Terlebih Dulu");
+          navigate('/login');
+        } else{
+          setAuthedUsers(true);
+          console.log({name, email, id })
+        }
+      }); 
+  }, []);
+
+  // Event Handler
+  const onClickToogleTheme = () => {
+    theme === 'light' ? setTheme('') : setTheme('light'); 
   }
 
-  render () {
-    return (
-      <div className="app-container" data-theme={this.state.theme}>
+  
+  return (
+    <ThemeContext.Provider value={ThemeContext}>
+      <div className="app-container" data-theme={theme}>
         <header>
-          <Navigation />
+          <Navigation onClickToogleTheme={onClickToogleTheme}/>
         </header>
         <main>
-          <Routes>
+          {authedUsers === true ? 
+            <Routes>
             <Route path='/'  element={<HomePageWrapper />}/>
             <Route path='/notes/:id'  element={<DetailPageWrapper />}/>
             <Route path='/notes/edit/:noteId'  element={<EditPagesWrapper />}/>
             <Route path='/notes/new'  element={<AddPagesWrapper />}/>
             <Route path='/arsip' element={<ArchivePagesWrapper />}/>
             <Route path='*' element={<NotFoundPage />}/>
-          </Routes>
-          
+            </Routes>
+            :
+            <Routes>
+                <Route path='*' element={<LoginPage successLoginHandler={successLoginHandler}/>}/>
+                <Route path='/register' element={<RegisterPage />} />
+            </Routes>
+        }
+        
         </main>
-          <div className='toogle-wrap toogle-theme'>
-              <ButtonActions icon={this.state.theme === 'light'? <FiSun /> : <FiMoon /> } tooltipe={"ganti tema"} onClick={this.onClickToogleTheme}/>
-          </div>
+          
       </div>
-    );
-
-  }
+    </ThemeContext.Provider>
+  );
+  
 }
+
 
 export default App;

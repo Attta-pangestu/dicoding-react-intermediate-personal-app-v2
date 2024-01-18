@@ -12,54 +12,62 @@ function putAccessToken(token) {
 }
 
 async function register({name, email, password}) {
-    const response = await axios.post(`${BASE_URL}/register`, { 
-        name, 
-        email,
-        password
-    }); 
-    const responseData = response.data ; 
-    if(responseData.status === 'success') {
-        putAccessToken(responseData.data.hashedPassword); 
-        alert("Berhasil Mendaftarkan Akun, Hai ",  responseData.data.name);
-        console.log("Berhasil Mendaftarkan Akun, Hai ",  responseData.data.name);
-        return ;
+    try{
+        const response = await axios.post(`${BASE_URL}/register`, { 
+            name, 
+            email,
+            password
+        }); 
+        const responseData = response.data ; 
+        console.log(responseData);
+        if(responseData.status === 'success') {
+            return {error : false, message : responseData.message} ;
+        }
     }
-    alert("Terjadi error saat mendaftarkan error : ", responseData.message);
-    console.log("Terjadi error saat mendaftarkan error : ", responseData.message);
+    catch(error) {
+        return {error : true, message : error} ;
+    }
     
 }
 
-async function login({email, password}) {
-    const response = await axios(`${BASE_URL}/login`, {
-        email, 
-        password, 
-    });
-    const responseData = response.data; 
+async function login({ email, password }) {
+    try {
+        const response = await fetch(`${BASE_URL}/login`, {
+            method : 'POST', 
+            headers: {
+                'Content-Type' : 'application/json'
+            }, 
+            body : JSON.stringify({email, password}),
+        });
+        const responseJSON = await response.json();
+        const responseData = responseJSON;
+        if (responseData.status === 'success') {
+            putAccessToken(responseData.data.accessToken);
+            return { error: false, message: responseData.message };
+        }
 
-    if(responseData.status === 'success') {
-        putAccessToken(responseData.data.hashedPassword); 
-        alert("Berhasil Masuk , Selamat Datang")
-        console.log("Berhasil Masuk, accesToken",  responseData.data.accessToken);
-        return ;
+    } catch (error) {
+        alert("Terjadi Kesalahan Saat Login");
+        console.error("Terjadi error saat login: ", error);
+        return { error: true};
     }
-    alert("Terjadi error saat mendaftarkan error : ", responseData.message);
-    
 }
+
 
 
 async function getUserLoggedIn() {
     if(getAccessToken()) {
         const response = await axios(`${BASE_URL}/users/me`, {
             headers: {
-                Authorization : `Bearer ${getAccessToken}`
+                Authorization : `Bearer ${getAccessToken()}`
             }
         });
     
         const responseData = response.data; 
     
         if(responseData.status === 'success') {
-            alert("Berhasil Mendaftarkan Akun, Hai ",  responseData.data.name);
             const {id, name, email} = responseData.data;
+            alert("Berhasil Mendaftarkan Akun, Hai "  + name);
             return {
                 error : false, 
                 id,
@@ -78,4 +86,4 @@ export {
     register,
     login, 
     getUserLoggedIn,
-}
+};
