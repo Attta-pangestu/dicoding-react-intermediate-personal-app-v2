@@ -10,9 +10,7 @@ import ThemeContext from "../context/themeContext";
 
 
 function Navigation({onClickToogleTheme}) {
-    const {theme} = React.useContext(ThemeContext);
-    console.log(theme);
-
+    const {theme, toggleTheme } = React.useContext(ThemeContext);
     return( 
         <React.Fragment >
             <h1><Link to="/">Aplikasi Catatan</Link></h1>

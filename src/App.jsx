@@ -3,6 +3,8 @@ import {Route, Routes, useNavigate} from 'react-router-dom';
 
 // utils
 import { getUserLoggedIn} from './utils/networkData';
+
+// Context
 import ThemeContext from './context/themeContext';
 
 // Components 
@@ -24,7 +26,7 @@ function App () {
   const navigate = useNavigate();
   const toggleTheme = () => { theme === 'light' ? setTheme('') : setTheme('light') }; 
 
-  const ThemeContext = {
+  const themeContext = {
     theme,
     toggleTheme, 
   };
@@ -57,31 +59,31 @@ function App () {
 
   
   return (
-    <ThemeContext.Provider value={ThemeContext}>
-      <div className="app-container" data-theme={theme}>
-        <header>
-          <Navigation onClickToogleTheme={onClickToogleTheme}/>
-        </header>
-        <main>
-          {authedUsers === true ? 
-            <Routes>
-            <Route path='/'  element={<HomePageWrapper />}/>
-            <Route path='/notes/:id'  element={<DetailPageWrapper />}/>
-            <Route path='/notes/edit/:noteId'  element={<EditPagesWrapper />}/>
-            <Route path='/notes/new'  element={<AddPagesWrapper />}/>
-            <Route path='/arsip' element={<ArchivePagesWrapper />}/>
-            <Route path='*' element={<NotFoundPage />}/>
-            </Routes>
-            :
-            <Routes>
-                <Route path='*' element={<LoginPage successLoginHandler={successLoginHandler}/>}/>
-                <Route path='/register' element={<RegisterPage />} />
-            </Routes>
-        }
-        
-        </main>
+    <ThemeContext.Provider value={themeContext}>
+
+        <div className="app-container" data-theme={theme}>
+          <header>
+            <Navigation onClickToogleTheme={onClickToogleTheme}/>
+          </header>
+          <main>
+            {authedUsers === true ? 
+              <Routes>
+              <Route path='/'  element={<HomePageWrapper />}/>
+              <Route path='/notes/:id'  element={<DetailPageWrapper />}/>
+              <Route path='/notes/edit/:noteId'  element={<EditPagesWrapper />}/>
+              <Route path='/notes/new'  element={<AddPagesWrapper />}/>
+              <Route path='/arsip' element={<ArchivePagesWrapper />}/>
+              <Route path='*' element={<NotFoundPage />}/>
+              </Routes>
+              :
+              <Routes>
+                  <Route path='*' element={<LoginPage successLoginHandler={successLoginHandler}/>}/>
+                  <Route path='/register' element={<RegisterPage />} />
+              </Routes>
+          }
           
-      </div>
+          </main>
+        </div>
     </ThemeContext.Provider>
   );
   
