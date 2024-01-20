@@ -55,8 +55,15 @@ header h1 {
   flex: 1;
 }
 
+.navigation ul {
+  display: flex;
+  align-items: center;
+}
+
 header .navigation ul li {
-  display: inline-block;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
   font-size: 24px;
   margin: 0 8px;
 }

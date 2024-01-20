@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // utlis
 import { editNote, getNote} from "../utils/local-data";
-
+import { getDetailNote } from "../utils/networkData";
 // component
 import NoteInput from "../components/NoteInput";
 import ButtonActions from "../components/ButtonActions";
@@ -14,15 +14,25 @@ import sweetAlert from "../components/SweetAlert";
 function EditPagesWrapper() {
     const {noteId}  = useParams();
     const navigate = useNavigate();
-    const noteData = getNote(noteId);
+
+    const [noteData, setNoteData] = React.useState({});
+    const [isLoading, setIsLoading] = React.useState(true);
     const initialBody = noteData.body;
 
+    React.useEffect(()=> {
+        getDetailNote(noteId).then(({data}) => {
+            setNoteData(data);
+            setIsLoading(false);
+        })
+    }, [])
     function onClickEditHandler(stateNote) {
         editNote({...stateNote});
         sweetAlert("Berhsil Menyimpan Catatan");
         navigate('/');
     }
-
+    if(isLoading) {
+        return (<div className="add-new-page"></div>)
+    }
     return <EditPages initialBody={initialBody} noteItem={noteData} onClickEdit={onClickEditHandler}/>
 }
 

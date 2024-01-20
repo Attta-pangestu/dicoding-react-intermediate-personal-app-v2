@@ -23,3 +23,20 @@ export function useNameInput(){
     };
     return [name, changeNameHandler];
 }
+
+export function useTitleInput(){
+    const [name, setName] = useState('') ; 
+    const changeNameHandler = (event) => {
+        setName(event.target.value);
+    };
+    return [name, changeNameHandler];
+}
+
+export function useBodyInput(){
+    const [name, setName] = useState('') ; 
+    const changeNameHandler = (event) => {
+        setName(event.target.innerHTML);
+    };
+    return [name, changeNameHandler];
+}
+

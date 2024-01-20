@@ -1,7 +1,14 @@
 import React from "react";
 import {useParams} from 'react-router-dom';
-import { getNote, archiveNote, deleteNote, unarchiveNote } from "../utils/local-data";
 import { useNavigate } from "react-router-dom";
+
+
+// Utlis
+import { getDetailNote, deleteNote, archiveNote, unArchiveNote, } from "../utils/networkData";
+import { showFormattedDate } from "../utils/convertDateFormat";
+
+// context
+import LocaleContext from "../context/localeContext";
 
 // import component
 import ButtonActions from "../components/ButtonActions";
@@ -9,87 +16,70 @@ import {FiArchive, FiTrash2, FiUpload, FiEdit} from "react-icons/fi" ;
 import sweetAlert from "../components/SweetAlert";
 
 
-
 function DetailPageWrapper() {
     const {id} = useParams();
+    const {locale} = React.useContext(LocaleContext);
     const navigate = useNavigate();
+    
+    // state 
+    const [detailNote, setDetailNote] = React.useState([]); 
+    const [isLoading, setIsLoading] = React.useState(true);
+    
+    React.useEffect(() => {
+        getDetailNote(id).then(({error, data}) => {
+            setDetailNote(data);
+            setIsLoading(false);
+        })
+    }, [])
 
-    function onEditHandler(id) {
+    function onEditHandler() {
         navigate(`/notes/edit/${id}`);
     }
 
-    function onArchiveHandler(id){
-        archiveNote(id);
+    async function onArchiveHandler(){
+        await archiveNote(id);
         sweetAlert("Berhasil Mengarsipkan Catatan");
         navigate('/');  
     }
 
-    function onActiveHandler(id) {
-        unarchiveNote(id);
+    async function onActiveHandler() {
+        await unArchiveNote(id);
         sweetAlert("Berhasil Mengaktifkan Catatan");
         navigate('/');
     }
     
-    function onDelete(id) {
-        deleteNote(id) ; 
-        console.log(getNote(id));
+    async function onDelete() {
+        await deleteNote(id) ; 
         sweetAlert("Berhasil Menghapus Catatan");
         navigate('/');
     }
 
-    return <DetailPage onEdit={onEditHandler} onActive={onActiveHandler} noteId={id} onArchive={onArchiveHandler} onDelete={onDelete}/>;
-
-}
-
-class DetailPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            detailNote : getNote(props.noteId),
-        }
-        
-        this.onClickDeleteButton = this.onClickDeleteButton.bind(this);
-        this.onClickArchiveButtonHandler = this.onClickArchiveButtonHandler.bind(this);
-        this.onClickActiveButtonHandler = this.onClickActiveButtonHandler.bind(this);
-        this.onClickEditButton = this.onClickEditButton.bind(this);
-    }
+    const {title, body, createdAt, archived} = detailNote ; 
     
-    onClickEditButton() {
-        this.props.onEdit(this.props.noteId);
-    }
-
-    onClickDeleteButton() {
-        this.props.onDelete(this.props.noteId);
-    }
-
-    onClickArchiveButtonHandler() {
-        this.props.onArchive(this.props.noteId);
-    }
-
-    onClickActiveButtonHandler(){
-        this.props.onActive(this.props.noteId);
-    }
-
-    render() {
-        const {title, body, createdAt, archived} = this.state.detailNote ; 
-        return (
-            <div className="detail-page">
-                <h1 className="detail-page__title">{title}</h1>
-                <small className="detail-page__createdAt">{createdAt}</small>
-                <p className="detail-page__body">{body}</p>
-                <div className="detail-page__action">
-                    <ButtonActions icon={<FiEdit />} tooltipe={"Edit"} onClick={this.onClickEditButton} />
-                    {archived ?
-                    <ButtonActions  icon={<FiUpload />} tooltipe={"Aktifkan"} onClick={this.onClickActiveButtonHandler} /> 
-                    : 
-                    <ButtonActions  icon={<FiArchive />} tooltipe={"Arsipkan"} onClick={this.onClickArchiveButtonHandler} />  
-                    }
-                    <ButtonActions icon={<FiTrash2 />} tooltipe={"Delete Catatan Ini"} onClick={this.onClickDeleteButton} /> 
-                </div>
-            </div>
+    if(isLoading) {
+        return(
+            <div className="detail-page"></div>
         );
-        
     }
+
+    return (
+        <div className="detail-page">
+            <h1 className="detail-page__title">{title}</h1>
+            <small className="detail-page__createdAt">{locale === 'id' ? showFormattedDate(createdAt, "id-ID") : showFormattedDate(createdAt, "en-EN")}</small>
+            <p className="detail-page__body">{body}</p>
+            <div className="detail-page__action">
+                <ButtonActions icon={<FiEdit />} tooltipe={"Edit"} onClick={onEditHandler} />
+                {archived ?
+                <ButtonActions  icon={<FiUpload />} tooltipe={"Aktifkan"} onClick={onActiveHandler} /> 
+                : 
+                <ButtonActions  icon={<FiArchive />} tooltipe={"Arsipkan"} onClick={onArchiveHandler} />  
+                }
+                <ButtonActions icon={<FiTrash2 />} tooltipe={"Delete Catatan Ini"} onClick={onDelete} /> 
+            </div>
+        </div>
+    );
+    
+
 }
 
 export default DetailPageWrapper;

@@ -6,12 +6,18 @@ import SearchBar from "../components/SearchBar";
 import NoteList from "../components/NoteList";
 
 // import utlis
-import { getArchivedNotes } from "../utils/local-data";
-
+import { getArchiveNOte } from "../utils/networkData";
 
 function ArchivePagesWrapper () {
     const [searchParams, setSearchParams] = useSearchParams();
-    
+    const [archivedNotes, setArchivedNotes] = React.useState([]);
+    const [isLoading, setLoading] = React.useState(true);
+    React.useEffect(() => {
+        getArchiveNOte().then(({data}) => {
+            setArchivedNotes(data); 
+            setLoading(false); 
+        })
+    })
     function onSearchBarChangeHandler(keyword){
         setSearchParams({
             note : keyword,
@@ -19,15 +25,17 @@ function ArchivePagesWrapper () {
     }
     const searchKeyword = searchParams.get('note');
     
-
-    return <ArchivePages searchKeyword={searchKeyword} onSearch={onSearchBarChangeHandler}/>
+    if(isLoading) {
+        return(<div className="archived-page"></div>)
+    }
+    return <ArchivePages archiveNotes={archivedNotes} searchKeyword={searchKeyword} onSearch={onSearchBarChangeHandler}/>
 }
 
 class ArchivePages extends React.Component {
-    constructor() {
-        super(); 
+    constructor(props) {
+        super(props); 
         this.state = {
-            archiveNotes : getArchivedNotes(),
+            archiveNotes : props.archiveNotes,
             searchKeyword :  '', 
         }
         this.onSearchHandler = this.onSearchHandler.bind(this);
@@ -47,7 +55,6 @@ class ArchivePages extends React.Component {
             );
         }
         );
-        const archivedNotes = getArchivedNotes();
         return (
             <section>
                 <h2>Catatan Diarsipkan</h2>

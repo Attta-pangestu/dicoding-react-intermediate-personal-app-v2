@@ -47,7 +47,8 @@ let notes = [
 
 function getAllNotes() {
   const convertDateFormat = notes.map((note) => {
-    return { ...note, createdAt: showFormattedDate(note.createdAt) };
+    const localeFormat = locale === 'id' ? 'id-ID' : 'en-EN' ; 
+    return { ...note, createdAt: showFormattedDate(note.createdAt, localeFormat) };
   });
   return convertDateFormat;
 }
